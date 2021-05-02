@@ -1,0 +1,3 @@
+app:
+  name: "hentry-client"
+  host: "http://localhost:3000"
