@@ -26,14 +26,14 @@ func getTeamId() string {
 	prompt := promptui.Prompt{
 		Label:    "Team ID",
 		Validate: validate,
-		Default:  "team-" + teamID,
+		Mask:     '*',
 	}
 
 	result, err := prompt.Run()
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
-		return ""
+		return teamID
 	}
 
 	return result
@@ -64,7 +64,7 @@ func getTeamName() string {
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
-		return ""
+		return teamID
 	}
 
 	return result
