@@ -1,12 +1,16 @@
 package config
 
 // Load returns the current configurations
-func Load() configStruct {
-	data := configStruct{
-		name:      "hentry",
-		server:    "http://localhost:8000",
-		frequency: 10,
+func Init() {
+	data := ConfigStruct{
+		Name:      "hentry",
+		Server:    "http://localhost:8000",
+		Frequency: 10,
 	}
 
-	return data
+	Load.Name = data.Name
+	Load.Server = data.Server
+	Load.Frequency = data.Frequency
 }
+
+var Load ConfigStruct
