@@ -1,8 +1,8 @@
 package config
 
 // Config details available throughout the system
-type configStruct struct {
-	name      string
-	server    string
-	frequency int
+type ConfigStruct struct {
+	Name      string
+	Server    string
+	Frequency int
 }
