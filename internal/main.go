@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/YashKumarVerma/hentry-client/internal/config"
 	"github.com/YashKumarVerma/hentry-client/internal/team"
-	"github.com/YashKumarVerma/hentry-client/internal/team/screens"
 )
 
 func main() {
@@ -12,12 +11,15 @@ func main() {
 	config.Init()
 
 	// show prompt to join a team or create a team
-	teamOperation := screens.CreateOrJoinTeamScreen()
+	teamOperation := team.CreateOrJoinTeamScreen()
 	if teamOperation == "create" {
-		teamDetails := screens.CreateTeamScreen()
+		teamDetails := team.CreateTeamScreen()
 		teamAPIResponse := team.CreateTeamAPI(teamDetails)
 		_ = teamAPIResponse
 	} else {
+		teamDetails := team.JoinTeamScreen()
+		teamAPIResponse := team.GetTeamDetailAPI(teamDetails.TeamID)
+		fmt.Println(teamAPIResponse)
 
 	}
 
