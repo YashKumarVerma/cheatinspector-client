@@ -13,19 +13,6 @@ func main() {
 	config.Init()
 	sensor.Init()
 
-	success, folderNames := fs.ListFolders("./")
-	if !success {
-		fmt.Errorf("error reading folder names")
-		return
-	}
-
-	for _, folder := range folderNames {
-		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
-		for _, i := range filesNotIgnored {
-			fmt.Println(i)
-		}
-	}
-
 	// holders for user data
 	//var UserTeam team.Team
 	//var UserDevice device.Device
@@ -63,4 +50,18 @@ func main() {
 	//}
 	//
 	//fmt.Println(UserTeam, UserDevice)
+
+
+	success, folderNames := fs.ListFolders("./")
+	if !success {
+		fmt.Errorf("error reading folder names")
+		return
+	}
+
+	for _, folder := range folderNames {
+		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
+		for _, i := range filesNotIgnored {
+			fmt.Println(i)
+		}
+	}
 }
