@@ -11,9 +11,6 @@ import (
 // - sync data with cloud provider
 // - save last snapshot of cache locally
 
-// AppFs allows working with different file systems using a clean API, so less
-// worries about platform compatibility.
-
 // IndexAllFiles walks the passed path, and returns the list of ignored and
 // focused files
 func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string) {

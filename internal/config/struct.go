@@ -6,4 +6,5 @@ type ConfigStruct struct {
 	Server    string
 	Frequency int
 	FileName  string
+
 }
