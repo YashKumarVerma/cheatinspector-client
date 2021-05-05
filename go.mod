@@ -9,5 +9,7 @@ require (
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/manifoldco/promptui v0.8.0
 	github.com/msempere/golarm v0.0.0-20150824133334-bcbb8a387dda // indirect
+	github.com/sabhiram/go-gitignore v0.0.0-20201211210132-54b8a0bf510f // indirect
+	github.com/spf13/afero v1.6.0
 	github.com/spf13/viper v1.7.1 // indirect
 )

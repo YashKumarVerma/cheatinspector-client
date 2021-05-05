@@ -1,14 +1,29 @@
 package main
 
 import (
+	"fmt"
 	"github.com/YashKumarVerma/hentry-client/internal/config"
+	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
+	"github.com/YashKumarVerma/hentry-client/internal/watchman"
 )
 
 func main() {
 	// initialize all modules
 	config.Init()
 	sensor.Init()
+
+	success, folderNames := fs.ListFolders("./")
+	if !success {
+		fmt.Errorf("error reading folder names")
+		return
+	}
+
+	for _, folder := range folderNames {
+		watchman.IndexAllFiles(folder)
+	}
+
+
 
 	// holders for user data
 	//var UserTeam team.Team
