@@ -6,6 +6,7 @@ func Init() {
 		Name:      "hentry",
 		Server:    "http://localhost:8000",
 		Frequency: 10,
+		FileName:  ".hentryrc",
 	}
 
 	Load.Name = data.Name
