@@ -1,7 +1,6 @@
 package watchman
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -15,23 +14,22 @@ import (
 // AppFs allows working with different file systems using a clean API, so less
 // worries about platform compatibility.
 
-func Init() {
-
-}
-
-func IndexAllFiles(path string) {
+// IndexAllFiles walks the passed path, and returns the list of ignored and
+// focused files
+func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string) {
+	var focusedFiles []string
+	var ignoredFiles []string
 
 	filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if isKnownConfigs(info.Name()) {
-			fmt.Println(">> directly ignore : " + path)
-		}
-
-		if childOfIgnoredDirectory(path) {
-			fmt.Println(">> ignore as child : " + path)
+			ignoredFiles = append(ignoredFiles, path)
+		} else if childOfIgnoredDirectory(path) {
+			ignoredFiles = append(ignoredFiles, path)
 		} else {
-			fmt.Println(">> >> >> >>  accept as child : " + path)
+			focusedFiles = append(focusedFiles, path)
 		}
-
 		return nil
 	})
+
+	return focusedFiles, ignoredFiles
 }

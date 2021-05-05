@@ -20,10 +20,11 @@ func main() {
 	}
 
 	for _, folder := range folderNames {
-		watchman.IndexAllFiles(folder)
+		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
+		for _, i := range filesNotIgnored {
+			fmt.Println(i)
+		}
 	}
-
-
 
 	// holders for user data
 	//var UserTeam team.Team
