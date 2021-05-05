@@ -1,6 +1,7 @@
 package fs
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -77,6 +78,31 @@ func DeleteFile(path string) bool {
 	}
 
 	return true
+}
+
+func LineCounter(path string) (int, error) {
+	file, err := os.OpenFile(path, os.O_RDWR, 644)
+	if err != nil {
+		return -1, err
+	}
+	defer file.Close()
+
+	buf := make([]byte, 32*1024)
+	count := 0
+	lineSep := []byte{'\n'}
+
+	for {
+		c, err := file.Read(buf)
+		count += bytes.Count(buf[:c], lineSep)
+
+		switch {
+		case err == io.EOF:
+			return count, nil
+
+		case err != nil:
+			return count, err
+		}
+	}
 }
 
 func isError(err error) bool {

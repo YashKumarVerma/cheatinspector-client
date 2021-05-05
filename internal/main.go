@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/YashKumarVerma/hentry-client/internal/config"
+	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
+	"strconv"
 )
 
 func main() {
@@ -50,17 +53,17 @@ func main() {
 	//
 	//fmt.Println(UserTeam, UserDevice)
 
+	success, folderNames := fs.ListFolders("./")
+	if !success {
+		fmt.Errorf("error reading folder names")
+		return
+	}
 
-	//success, folderNames := fs.ListFolders("./")
-	//if !success {
-	//	fmt.Errorf("error reading folder names")
-	//	return
-	//}
-
-	//for _, folder := range folderNames {
-	//	filesNotIgnored, _ := watchman.IndexAllFiles(folder)
-	//	for _, i := range filesNotIgnored {
-	//		fmt.Println(len(i))
-	//	}
-	//}
+	for _, folder := range folderNames {
+		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
+		for _, i := range filesNotIgnored {
+			counter, _ := fs.LineCounter(i)
+			fmt.Println("> " + i + " : " + strconv.Itoa(counter))
+		}
+	}
 }
