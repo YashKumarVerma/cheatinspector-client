@@ -43,3 +43,22 @@ func ListFolders(path string) (bool, []string) {
 
 	return true, folderNames
 }
+
+// ListFiles returns list of files only
+func ListFiles(path string) (bool, []string) {
+	var fileNames []string
+	files, err := ioutil.ReadDir(path)
+
+	if err != nil {
+		log.Fatal(err)
+		return false, fileNames
+	}
+
+	for _, f := range files {
+		if !f.IsDir() {
+			fileNames = append(fileNames, f.Name())
+		}
+	}
+
+	return true, fileNames
+}
