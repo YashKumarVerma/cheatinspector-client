@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.2.12
+	github.com/allegro/bigcache/v3 v3.0.0 // indirect
 	github.com/carlescere/scheduler v0.0.0-20170109141437-ee74d2f83d82 // indirect
 	github.com/cloudfoundry/gosigar v1.2.0 // indirect
 	github.com/denisbrodbeck/machineid v1.0.1
