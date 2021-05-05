@@ -29,14 +29,12 @@ func GetDeviceDetailAPI(deviceID string) (bool, Device) {
 	var parsedAPIResponse getDeviceDetailsAPIResponse
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
 
-	if parsedAPIResponse.Err == true {
-		return false, device
-	}
-
-	return true, device
+	return parsedAPIResponse.Err, device
 }
 
-func RegisterDeviceAPI(device registerDeviceStruct, teamID string) Device {
+func RegisterDeviceAPI(device registerDeviceStruct, teamID string) (bool, Device) {
+	var deviceInfo Device
+
 	// structure the data that needs to be sent
 	postBody, _ := json.Marshal(map[string]string{
 		"machineID":       device.MachineID,
@@ -60,10 +58,12 @@ func RegisterDeviceAPI(device registerDeviceStruct, teamID string) Device {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
+		return true, deviceInfo
 	}
 
 	var parsedAPIResponse getDeviceDetailsAPIResponse
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
+	deviceInfo = parsedAPIResponse.Payload
 
-	return parsedAPIResponse.Payload
+	return parsedAPIResponse.Err, deviceInfo
 }

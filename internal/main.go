@@ -33,14 +33,19 @@ func main() {
 	userDeviceInfo := sensor.Load
 	notFound, deviceInfo := device.GetDeviceDetailAPI(userDeviceInfo.MachineID)
 
-	if notFound {
+	if notFound == true {
 		fmt.Println("Device not registered on Hentry, registration in process...")
 		deviceDetails := device.CreateTeamScreen()
-		deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
-		fmt.Println("Device registered.")
-		UserDevice = deviceAPIResponse
+		teamNotFound, deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
+
+		if teamNotFound == true {
+			fmt.Println("Team does not exist")
+		} else {
+			fmt.Println("Device registered.")
+			UserDevice = deviceAPIResponse
+		}
 	} else {
-		fmt.Println("Device alreadt registered.")
+		fmt.Println("Device already registered.")
 		UserDevice = deviceInfo
 	}
 
