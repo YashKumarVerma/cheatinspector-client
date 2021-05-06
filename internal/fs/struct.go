@@ -9,4 +9,5 @@ type FileDetails struct {
 	Size         int64
 	LineCount    int
 	LastModified time.Time
+	Contents     string
 }

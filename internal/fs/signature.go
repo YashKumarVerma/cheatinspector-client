@@ -2,6 +2,7 @@ package fs
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"os"
 )
@@ -14,12 +15,18 @@ func AnalyzeFile(path string) (success bool, file FileDetails) {
 		return false, fileDetails
 	}
 
+	success, contents := ReadFile(path)
+	if !success {
+		fmt.Println("Error reading contents")
+	}
+
 	// load metadata about file
 	fileDetails.Path = path
 	fileDetails.Name = meta.Name()
 	fileDetails.Size = meta.Size()
 	fileDetails.LastModified = meta.ModTime()
 	fileDetails.LineCount = lineCounter(path)
+	fileDetails.Contents = contents
 
 	return true, fileDetails
 }

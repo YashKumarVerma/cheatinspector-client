@@ -1,8 +1,12 @@
 package watchman
 
 import (
+	"fmt"
+	"github.com/YashKumarVerma/hentry-client/internal/fs"
+	"github.com/sergi/go-diff/diffmatchpatch"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 // Watchman is responsible for the following actions
@@ -22,6 +26,8 @@ func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string
 			ignoredFiles = append(ignoredFiles, path)
 		} else if childOfIgnoredDirectory(path) {
 			ignoredFiles = append(ignoredFiles, path)
+		} else if info.IsDir() {
+			ignoredFiles = append(ignoredFiles, path)
 		} else {
 			focusedFiles = append(focusedFiles, path)
 		}
@@ -29,4 +35,25 @@ func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string
 	})
 
 	return focusedFiles, ignoredFiles
+}
+
+// ProcessFile calculates the diff between subsequent calls
+func ProcessFile(file fs.FileDetails) bool {
+	_, newDetails := fs.AnalyzeFile(file.Path)
+	var difference Diff
+	diffCalculator := diffmatchpatch.New()
+
+	// check if entry exist in hashmap
+	if oldDetails, ok := index[file.Path]; ok {
+		difference.size = oldDetails.Size - newDetails.Size
+		difference.timestamp = newDetails.LastModified.Sub(oldDetails.LastModified)
+		difference.changes = diffCalculator.DiffMain(oldDetails.Contents, newDetails.Contents, true)
+	} else {
+		difference.size = newDetails.Size
+		difference.timestamp = newDetails.LastModified.Sub(time.Now())
+		difference.changes = diffCalculator.DiffMain(newDetails.Contents, "", true)
+	}
+
+	fmt.Println(difference)
+	return true
 }

@@ -62,7 +62,7 @@ func main() {
 		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
 		for _, i := range filesNotIgnored {
 			_, fileDetails := fs.AnalyzeFile(i)
-			fmt.Println(fileDetails)
+			go watchman.ProcessFile(fileDetails)
 		}
 	}
 }
