@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 )
 
@@ -15,8 +16,8 @@ func AnalyzeFile(path string) (success bool, file FileDetails) {
 		return false, fileDetails
 	}
 
-	success, contents := ReadFile(path)
-	if !success {
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
 		fmt.Println("Error reading contents")
 	}
 
@@ -26,7 +27,7 @@ func AnalyzeFile(path string) (success bool, file FileDetails) {
 	fileDetails.Size = meta.Size()
 	fileDetails.LastModified = meta.ModTime()
 	fileDetails.LineCount = lineCounter(path)
-	fileDetails.Contents = contents
+	fileDetails.Contents = string(data)
 
 	return true, fileDetails
 }

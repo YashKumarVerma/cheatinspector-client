@@ -6,7 +6,6 @@ import (
 	"github.com/sergi/go-diff/diffmatchpatch"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 // Watchman is responsible for the following actions
@@ -45,13 +44,14 @@ func ProcessFile(file fs.FileDetails) bool {
 
 	// check if entry exist in hashmap
 	if oldDetails, ok := index[file.Path]; ok {
+		diff := diffCalculator.DiffMain(oldDetails.Contents, newDetails.Contents, true)
 		difference.size = oldDetails.Size - newDetails.Size
 		difference.timestamp = newDetails.LastModified.Sub(oldDetails.LastModified)
-		difference.changes = diffCalculator.DiffMain(oldDetails.Contents, newDetails.Contents, true)
+		difference.changes = diffCalculator.DiffLevenshtein(diff)
 	} else {
 		difference.size = newDetails.Size
-		difference.timestamp = newDetails.LastModified.Sub(time.Now())
-		difference.changes = diffCalculator.DiffMain(newDetails.Contents, "", true)
+		difference.timestamp = newDetails.LastModified.Sub(newDetails.LastModified)
+		difference.changes = len(newDetails.Contents)
 	}
 
 	fmt.Println(difference)
