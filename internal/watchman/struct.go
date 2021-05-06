@@ -10,3 +10,4 @@ type Diff struct {
 	timestamp time.Duration
 	changes   int
 }
+

@@ -6,9 +6,8 @@ import (
 
 var index map[string]fs.FileDetails
 
-// Init to setup and initialize cache handlers
-func Init() {
-
+func Init(){
+	index = make(map[string]fs.FileDetails)
 }
 
 // setCache saves the key and vale into storage

@@ -6,6 +6,7 @@ import (
 	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
+	"time"
 )
 
 func main() {
@@ -58,11 +59,17 @@ func main() {
 		return
 	}
 
-	for _, folder := range folderNames {
-		filesNotIgnored, _ := watchman.IndexAllFiles(folder)
-		for _, i := range filesNotIgnored {
-			_, fileDetails := fs.AnalyzeFile(i)
-			go watchman.ProcessFile(fileDetails)
+	// repeat the process based on config.frequency
+	for i := 1; i >= 0; i++ {
+		for _, folder := range folderNames {
+			filesNotIgnored, _ := watchman.IndexAllFiles(folder)
+			for _, i := range filesNotIgnored {
+				_, fileDetails := fs.AnalyzeFile(i)
+				watchman.ProcessFile(fileDetails)
+			}
 		}
+		time.Sleep(1 * time.Second)
+		fmt.Println("total entropy of project : ", watchman.AggregatorValue)
+		watchman.ResetAggregator()
 	}
 }

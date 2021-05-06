@@ -1,7 +1,6 @@
 package watchman
 
 import (
-	"fmt"
 	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/sergi/go-diff/diffmatchpatch"
 	"os"
@@ -37,7 +36,7 @@ func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string
 }
 
 // ProcessFile calculates the diff between subsequent calls
-func ProcessFile(file fs.FileDetails) bool {
+func ProcessFile(file fs.FileDetails) (bool) {
 	_, newDetails := fs.AnalyzeFile(file.Path)
 	var difference Diff
 	diffCalculator := diffmatchpatch.New()
@@ -48,12 +47,18 @@ func ProcessFile(file fs.FileDetails) bool {
 		difference.size = oldDetails.Size - newDetails.Size
 		difference.timestamp = newDetails.LastModified.Sub(oldDetails.LastModified)
 		difference.changes = diffCalculator.DiffLevenshtein(diff)
+
 	} else {
 		difference.size = newDetails.Size
 		difference.timestamp = newDetails.LastModified.Sub(newDetails.LastModified)
 		difference.changes = len(newDetails.Contents)
 	}
 
-	fmt.Println(difference)
+	// Aggregate the entropy to calculate net change per cycle
+	Aggregate(difference.changes)
+
+	// save the current state of file into cache
+	setCache(newDetails)
+
 	return true
 }
