@@ -36,7 +36,7 @@ func IndexAllFiles(path string) (filesNotIgnored []string, filesIgnored []string
 }
 
 // ProcessFile calculates the diff between subsequent calls
-func ProcessFile(file fs.FileDetails) (bool) {
+func ProcessFile(file fs.FileDetails) bool {
 	_, newDetails := fs.AnalyzeFile(file.Path)
 	var difference Diff
 	diffCalculator := diffmatchpatch.New()
