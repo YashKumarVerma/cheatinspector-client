@@ -18,7 +18,8 @@ func AnalyzeFile(path string) (success bool, file FileDetails) {
 	fileDetails.Path = path
 	fileDetails.Name = meta.Name()
 	fileDetails.Size = meta.Size()
-	fileDetails.lineCount = lineCounter(path)
+	fileDetails.LastModified = meta.ModTime()
+	fileDetails.LineCount = lineCounter(path)
 
 	return true, fileDetails
 }
