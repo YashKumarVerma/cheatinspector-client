@@ -5,7 +5,8 @@ func Init() {
 	data := ConfigStruct{
 		Name:      "hentry",
 		Server:    "http://localhost:8000",
-		Frequency: 10,
+        Feeder:    "http://localhost:9898",
+        Frequency: 10,
 		FileName:  ".hentryrc",
 	}
 

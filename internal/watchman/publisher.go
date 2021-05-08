@@ -22,7 +22,7 @@ func NotifyBackend(entropy uint64) bool {
 	responseBody := bytes.NewBuffer(postBody)
 
 	// make the request
-	resp, err := http.Post(config.Load.Server+"/entropy", "application/json", responseBody)
+	resp, err := http.Post(config.Load.Feeder+"/entropy", "application/json", responseBody)
 
 	// check if non 200 response
 	if err != nil {

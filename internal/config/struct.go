@@ -4,6 +4,7 @@ package config
 type ConfigStruct struct {
 	Name      string
 	Server    string
+    Feeder    string
 	Frequency int
 	FileName  string
 
