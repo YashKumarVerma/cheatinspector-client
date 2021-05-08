@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/YashKumarVerma/hentry-client/internal/config"
+	"github.com/YashKumarVerma/hentry-client/internal/device"
 	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
+	"github.com/YashKumarVerma/hentry-client/internal/team"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
-	"time"
 )
 
 func main() {
