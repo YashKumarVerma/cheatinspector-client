@@ -9,6 +9,7 @@ func Init() {
 
 	serverURL := "http://40.119.165.213:8000"
 	feeder := "http://40.119.165.213:9000"
+	// feeder := "http://localhost:9898"
 
 	data := ConfigStruct{
 		Name:      "hentry",

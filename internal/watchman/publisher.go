@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/YashKumarVerma/hentry-client/internal/config"
-	"github.com/YashKumarVerma/hentry-client/internal/sensor"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/YashKumarVerma/hentry-client/internal/config"
+	"github.com/YashKumarVerma/hentry-client/internal/sensor"
 )
 
 // NotifyBackend makes call to server to notify about project entropy
@@ -27,17 +28,21 @@ func NotifyBackend(entropy uint64) bool {
 	// check if non 200 response
 	if err != nil {
 		log.Fatalf("An Error Encountered %v", err)
-
 	}
 	defer resp.Body.Close()
 
 	// read response body as required
-	_, err = ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
+
 	}
 
-	fmt.Println("Data shared with server " , time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	fmt.Println("Publisher API Call : ")
+	fmt.Println("Publisher API Call : Target : ", config.Load.Feeder+"/data")
+	fmt.Println("Publisher API Call : Params : ", strconv.FormatUint(entropy, 10))
+	fmt.Println("Publisher API Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	fmt.Println("Publisher API Call : Response : ", string(body))
 
 	return true
 }
