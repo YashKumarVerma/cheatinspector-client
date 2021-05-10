@@ -23,7 +23,7 @@ func NotifyBackend(entropy uint64) bool {
 	responseBody := bytes.NewBuffer(postBody)
 
 	// make the request
-	resp, err := http.Post(config.Load.Feeder+"/data", "application/json", responseBody)
+	resp, err := http.Post(config.Load.Feeder+"/timeseries", "application/json", responseBody)
 
 	// check if non 200 response
 	if err != nil {
@@ -57,7 +57,7 @@ func UpdateSnapshot(data uint64) bool {
 	responseBody := bytes.NewBuffer(postBody)
 
 	// make the request
-	resp, err := http.Post(config.Load.Feeder+"/total", "application/json", responseBody)
+	resp, err := http.Post(config.Load.Feeder+"/snapshot", "application/json", responseBody)
 
 	// check if non 200 response
 	if err != nil {
