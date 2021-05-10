@@ -50,7 +50,7 @@ func main() {
 			UserDevice = deviceAPIResponse
 		}
 	} else {
-		fmt.Println("Device already registered.")
+		fmt.Println("Device already registered.", deviceInfo)
 		UserDevice = deviceInfo
 	}
 

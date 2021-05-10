@@ -3,6 +3,7 @@ package team
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -31,13 +32,24 @@ func CreateTeamAPI(team CreateTeamStruct) Team {
 
 	// read response body as required
 	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	var parsedAPIResponse createTeamAPIResponse
-	//sb := string(body)
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
+
+	// print detailed log about API call
+	fmt.Println("\nAPI Call Log ")
+	fmt.Println("\nAPI Call Log : Target ", config.Load.Server+"/team")
+	fmt.Println("\nAPI Call Log : Body : ", responseBody)
+	fmt.Println("\nAPI Call Log : Params : ", team)
+	fmt.Println("\nAPI Call Log : Response : Code ", parsedAPIResponse.Code)
+	fmt.Println("\nAPI Call Log : Response : Error ", parsedAPIResponse.Err)
+	fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.Devices)
+	fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.ID)
+	fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.Name)
 
 	return parsedAPIResponse.Payload
 }
@@ -58,6 +70,7 @@ func GetTeamDetailAPI(teamID string) Team {
 	}
 
 	var parsedAPIResponse getTeamDetailsAPIResponse
+	fmt.Println("API Response : ", parsedAPIResponse)
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
 
 	return parsedAPIResponse.Payload

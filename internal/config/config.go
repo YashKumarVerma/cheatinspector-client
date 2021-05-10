@@ -1,23 +1,32 @@
 package config
 
-import "flag"
+import (
+	"fmt"
+)
 
 // Load returns the current configurations
 func Init() {
 
-	serverURL := flag.String("api", "http://40.119.165.213:8000", "URL of main API server")
-	feeder := flag.String("feed", "http://40.119.165.213:9000", "URL of main API server")
+	serverURL := "http://40.119.165.213:8000"
+	feeder := "http://40.119.165.213:9000"
 
 	data := ConfigStruct{
 		Name:      "hentry",
-		Server:    *serverURL,
-		Feeder:    *feeder,
+		Server:    serverURL,
+		Feeder:    feeder,
 		Frequency: 10,
 		FileName:  ".hentryrc",
 	}
 
+	fmt.Println("Current Configs: ")
+	fmt.Println("Name : ", data.Name)
+	fmt.Println("Frequency : ", data.Frequency)
+	fmt.Println("Server : ", data.Server)
+	fmt.Println("Feeder : ", data.Feeder)
+	fmt.Println("\n\n")
+
 	Load.Name = data.Name
-	Load.Server = data.Feeder
+	Load.Server = data.Server
 	Load.Frequency = data.Frequency
 	Load.Feeder = data.Feeder
 }
