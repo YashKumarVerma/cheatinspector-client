@@ -71,8 +71,8 @@ func main() {
 				watchman.ProcessFile(fileDetails)
 			}
 		}
-		time.Sleep(1 * time.Second)
-		fmt.Println("total entropy of project : ", watchman.AggregatorValue)
+		time.Sleep(5 * time.Second)
 		watchman.ResetAggregator()
+		watchman.ResetTotal()
 	}
 }

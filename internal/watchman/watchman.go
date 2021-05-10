@@ -1,10 +1,11 @@
 package watchman
 
 import (
-	"github.com/YashKumarVerma/hentry-client/internal/fs"
-	"github.com/sergi/go-diff/diffmatchpatch"
 	"os"
 	"path/filepath"
+
+	"github.com/YashKumarVerma/hentry-client/internal/fs"
+	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
 // Watchman is responsible for the following actions
@@ -56,6 +57,7 @@ func ProcessFile(file fs.FileDetails) bool {
 
 	// Aggregate the entropy to calculate net change per cycle
 	Aggregate(difference.changes)
+	Total(newDetails.Size)
 
 	// save the current state of file into cache
 	setCache(newDetails)

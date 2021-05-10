@@ -38,11 +38,45 @@ func NotifyBackend(entropy uint64) bool {
 
 	}
 
-	fmt.Println("Publisher API Call : ")
-	fmt.Println("Publisher API Call : Target : ", config.Load.Feeder+"/data")
-	fmt.Println("Publisher API Call : Params : ", strconv.FormatUint(entropy, 10))
-	fmt.Println("Publisher API Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
-	fmt.Println("Publisher API Call : Response : ", string(body))
+	fmt.Println("Publisher Entropy Call : ")
+	fmt.Println("Publisher Entropy Call : Target : ", config.Load.Feeder+"/data")
+	fmt.Println("Publisher Entropy Call : Params : ", strconv.FormatUint(entropy, 10))
+	fmt.Println("Publisher Entropy Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	fmt.Println("Publisher Entropy Call : Response : ", string(body))
+
+	return true
+}
+
+
+// UpdateSnapshot makes call to server to tell about current project snapshot
+func UpdateSnapshot(data uint64) bool {
+	postBody, _ := json.Marshal(map[string]string{
+		"id": sensor.Load.MachineID,
+		"v":  strconv.FormatUint(data, 10),
+	})
+	responseBody := bytes.NewBuffer(postBody)
+
+	// make the request
+	resp, err := http.Post(config.Load.Feeder+"/total", "application/json", responseBody)
+
+	// check if non 200 response
+	if err != nil {
+		log.Fatalf("An Error Encountered %v", err)
+	}
+	defer resp.Body.Close()
+
+	// read response body as required
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+
+	}
+
+	fmt.Println("Publisher Snapshot Call : ")
+	fmt.Println("Publisher Snapshot Call : Target : ", config.Load.Feeder+"/data")
+	fmt.Println("Publisher Snapshot Call : Params : ", strconv.FormatUint(data, 10))
+	fmt.Println("Publisher Snapshot Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	fmt.Println("Publisher Snapshot Call : Response : ", string(body))
 
 	return true
 }
