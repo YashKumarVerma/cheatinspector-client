@@ -5,8 +5,8 @@ import "flag"
 // Load returns the current configurations
 func Init() {
 
-	serverURL := flag.String("api", "https://hentry.uniauth.co", "URL of main API server")
-	feeder := flag.String("feed", "https://hentry.uniauth.co", "URL of main API server")
+	serverURL := flag.String("api", "http://40.119.165.213:8000", "URL of main API server")
+	feeder := flag.String("feed", "http://40.119.165.213:9000", "URL of main API server")
 
 	data := ConfigStruct{
 		Name:      "hentry",
