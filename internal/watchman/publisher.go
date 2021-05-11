@@ -18,7 +18,7 @@ import (
 func NotifyBackend(entropy uint64) bool {
 	postBody, _ := json.Marshal(map[string]string{
 		"id": sensor.Load.MachineID,
-		"v":  strconv.FormatUint(entropy, 10),
+		"v":  string(strconv.FormatUint(entropy, 10)),
 	})
 	responseBody := bytes.NewBuffer(postBody)
 
@@ -47,12 +47,11 @@ func NotifyBackend(entropy uint64) bool {
 	return true
 }
 
-
 // UpdateSnapshot makes call to server to tell about current project snapshot
 func UpdateSnapshot(data uint64) bool {
 	postBody, _ := json.Marshal(map[string]string{
 		"id": sensor.Load.MachineID,
-		"v":  strconv.FormatUint(data, 10),
+		"v":  string(strconv.FormatUint(data, 10)),
 	})
 	responseBody := bytes.NewBuffer(postBody)
 
