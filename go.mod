@@ -13,5 +13,5 @@ require (
 	github.com/sabhiram/go-gitignore v0.0.0-20201211210132-54b8a0bf510f // indirect
 	github.com/sergi/go-diff v1.2.0
 	github.com/spf13/afero v1.6.0
-	github.com/spf13/viper v1.7.1 // indirect
+	github.com/spf13/viper v1.7.1
 )

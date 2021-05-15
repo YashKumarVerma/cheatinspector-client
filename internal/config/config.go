@@ -2,34 +2,31 @@ package config
 
 import (
 	"fmt"
+
+	"github.com/spf13/viper"
 )
 
-// Load returns the current configurations
+// Init seeds the configurations of the project.
 func Init() {
 
-	serverURL := "http://40.119.165.213:8000"
-	feeder := "http://40.119.165.213:9000"
-	// feeder := "http://localhost:9898"
-
-	data := ConfigStruct{
-		Name:      "hentry",
-		Server:    serverURL,
-		Feeder:    feeder,
-		Frequency: 10,
-		FileName:  ".hentryrc",
+	// initialize viper configurations
+	viper.SetConfigName("hentry")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println("Custom configurations not found, using defaults")
 	}
 
-	fmt.Println("Current Configs: ")
-	fmt.Println("Name : ", data.Name)
-	fmt.Println("Frequency : ", data.Frequency)
-	fmt.Println("Server : ", data.Server)
-	fmt.Println("Feeder : ", data.Feeder)
-	fmt.Println("\n\n")
+	// set the default as project deployment server
+	viper.SetDefault("server.url", "http://40.119.165.213:8000")
+	viper.SetDefault("feeder.url", "http://40.119.165.213:9000")
 
-	Load.Name = data.Name
-	Load.Server = data.Server
-	Load.Frequency = data.Frequency
-	Load.Feeder = data.Feeder
+	// assing the configurations to the exported data member
+	Load.Name = "hentry"
+	Load.Server = viper.GetString("server.url")
+	Load.Feeder = viper.GetString("feeder.url")
 }
 
+// Load exposes the configurations to other internal modules
 var Load ConfigStruct

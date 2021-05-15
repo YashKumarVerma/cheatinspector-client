@@ -38,6 +38,7 @@ func main() {
 	userDeviceInfo := sensor.Load
 	notFound, deviceInfo := device.GetDeviceDetailAPI(userDeviceInfo.MachineID)
 
+	//  if not found, then initiate login process
 	if notFound == true {
 		fmt.Println("Device not registered on Hentry, registration in process...")
 		deviceDetails := device.CreateTeamScreen()
@@ -50,17 +51,17 @@ func main() {
 			UserDevice = deviceAPIResponse
 		}
 	} else {
-		fmt.Println("Device already registered.", deviceInfo)
+		fmt.Println("Device already registered.")
 		UserDevice = deviceInfo
 	}
-
-	fmt.Println(UserTeam, UserDevice)
 
 	success, folderNames := fs.ListFolders("./")
 	if !success {
 		fmt.Errorf("error reading folder names")
 		return
 	}
+
+	fmt.Println("Device ID: ", UserDevice.MachineID)
 
 	// repeat the process based on config.frequency
 	for i := 1; i >= 0; i++ {
