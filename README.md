@@ -6,6 +6,11 @@
 
 Hentry, is a hackathon sentry that allows organizers to provide a fair competing platform in the online events. Since plagiarism and re-use are the major problems in such submissions which ruins the spirit of hackathons,  It utilizes intelligent algorithms to calculate project entropy and snapshots of participants' projects in real-time and visualizes the same for the organizers as a live graph in a pleasant user interface.
 
+Use live after reading the documentation for hentry-client
+- [hentry.surge.sh](http://hentry.surge.sh)
+
+Video: [Demo Here](https://www.youtube.com/watch?v=yLw9LxwsgQ0)
+
 
 ## Components
 
@@ -20,6 +25,12 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
 
 ## Architecture
 ![Project Architecture](https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png?token=ADLB4KYTBXCLY4N2QTW5J5TAVJJP2)
+
+
+Dashboard
+![https://i.imgur.com/NOlWUc5.png](https://i.imgur.com/NOlWUc5.png)
+
+![https://i.imgur.com/ox23m9A.png](https://i.imgur.com/ox23m9A.png)
 
 ## Hentry Client
 
@@ -77,48 +88,60 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
 ### Walkthrough
 
 Launching without any configurations or admin rights:
+
 ![https://i.imgur.com/TVZFUHS.png](https://i.imgur.com/TVZFUHS.png)
 
 Validation of input in CLI, alongwith live status display with ✔️ and ✖️ depending on input
+
 ![https://i.imgur.com/NsGGv2Q.png](https://i.imgur.com/NsGGv2Q.png)
+
 
 ![https://i.imgur.com/9bEHQaH.png](https://i.imgur.com/9bEHQaH.png)
 
 Similar checks for Team Name
+
 ![https://i.imgur.com/T9JlE54.png](https://i.imgur.com/T9JlE54.png)
 
 `hentry-client` automatically checks if device is already registered or not. Since my device was not registered, it asks me to register
+
 ![https://i.imgur.com/pwSJntM.png](https://i.imgur.com/pwSJntM.png)
 
 Shows a success message when device is successfully registered.
+
 ![Device Registered](https://i.imgur.com/dgpnUnk.png)
 
 Starts transmitting data to `hentry-server`
+
 ![Events being transmitted](https://i.imgur.com/zkOBFOP.png)
 
 The above was a demo when user was not already in a team, what if wants to join a team and they're already registered?
 
 Joining a team with team ID, note that the input is masked.
+
 ![Joining a Team](https://i.imgur.com/rozDbtd.png)
 
 Thanks to unique device signatures, hentry client identifies that the device is already registered and automatically adds it to the said team, and starts data transmission
+
 ![Device attached to team](https://i.imgur.com/iOFqztN.png)
 
 Lets play around with the config file. Note that `hentry-client` shows a list of directories that it ignores during startup, and what if the server configs change? To handle such cases, use the **hentry.yaml** file. I use the following `hentry-config` file.
 
+
 ![https://i.imgur.com/ngzg8e1.png](https://i.imgur.com/ngzg8e1.png)
 
 Now when we run the `hentry-client`, we can see that the new configurations are loaded, and more directories are being ignored.
+
 ![https://i.imgur.com/zXs44zu.png](https://i.imgur.com/zXs44zu.png)
 
 Also since the **debug** flag was set to true, the client now logs all the api calls it makes.
+
 ![https://i.imgur.com/aawruiB.png](https://i.imgur.com/aawruiB.png)
 
 ## Hentry Server
 
 ![https://i.imgur.com/TlCaJbc.png](https://i.imgur.com/TlCaJbc.png)
 
-- Hentry Server is written in typescript with modern tooling to quickly prototype the application.
+- Hentry Server is written in typescript with modern tooling to quickly prototype and debug the application.
 - The server is available on docker hub as yashkumarverma[](https://hub.docker.com/repository/docker/yashkumarverma/hentry-server)/hentry-server
 - Connects to reddismod instance and ensures that connection with json and timeseries module is made.
 - Provides routes for team formation, team joining, device registration, fetching all timeseries data and polling for updates in timeseries data.
@@ -128,31 +151,81 @@ Also since the **debug** flag was set to true, the client now logs all the api c
 - Divided into modules and services keep related codebase together and therefore make it easier to maintain.
 - Configurations can be accessed in `config` directory.
 
-![https://i.imgur.com/9HEwswE.png](https://i.imgur.com/9HEwswE.png)
-![https://i.imgur.com/SqBM14v.png](https://i.imgur.com/SqBM14v.png)
+### Walkthrough
+Clone the project from the repository to your local machine and then install the dependencies.
+```
+git clone https://github.com/YashKumarVerma/hentry-server
+cd hentry-server
+yarn
+```
+
+Once the dependencies are installed, to run a development version with live changes and other fancy tooling, run
+```
+yarn start:dev
+```
+
+or if you want to built the package and then run it, run 
+```
+yarn build
+yarn start:prod
+```
+
+Since the server interacts with redis and operates on JSON and timeseries modules, make sure a docker container is running with the redismod image. To run the container, run
+```
+yarn redis:mod
+```
+
+![Package Running](https://i.imgur.com/6FtuuxT.png)
+
+As the requests are being received, a uniform logging is also done. Tools like pm2 can be used to accumulate logs and launch the application in clusters. For demonstration purposes, it's running on as docker container on the deployment machine.
+
+![Uniform Logging](https://i.imgur.com/GcdTFsD.png)
 
 ## Hentry Feeder
 
 ![https://i.imgur.com/gXnIxAV.png](https://i.imgur.com/gXnIxAV.png)
 
-- Hentry feeder is a tiny microservice, designed to run in clusters depending upon the number of participants on the system.
-- Only purpose is to inject data received from the clients (hentry-client which can go upto thousands in number depending on event) into redis timeseries database.
-- To compile manually, run `make build` or compile `internal/main.go` for your architecture.
+- **Aim** : to push high ingress entropy and snapshot scores into redis databases running timeseries module.
+- **Why this?**
+  - Since events can be massive, like hackathons with thousands of participants, and everyone transmitting events using `redis-client` means a lot of traffic.
+  - We're confident that redis can easily ingress this data, and managed services like redis enterprise can make sure that the database are always prepared for what-may-come, but one can use those features only if your server is not a bottleneck.
+  - Therefore this micro-service was written, so that it can be deployed in clusters depending on number of participants. The load is divided into the cluster, and each of this cluster (running the hentry-feeder image) can keep feeding the redis deployment.
+  - This way we can make sure that our server is not the bottleneck for the infrastructure.
 - Also available as a docker container : [yashkumarverma/hentry-feeder](https://hub.docker.com/repository/docker/yashkumarverma/hentry-feeder)
+- Built utilizing **go-routines for ⚡ speed and concurrency**.
+- No fancy walk-through needed, pull the docker image, put the connection configurations as environment variables, attach it to a port, and BAM! it's up.
+- Detailed documentation about running clusters or docker pods can be found on the internet 🐼 
 
 ## Hentry Dashboard
 
 ![https://i.imgur.com/AFGOWdM.png](https://i.imgur.com/AFGOWdM.png)
-- main interface that is used by event organizers.
-- clean, minimal ui
-- option to search via team ID in landing page
+- Deployed on : [hentry.surge.sh](http://hentry.surge.sh/)
+- hentry dashboard is the main dashboard that is used by event organizers.
+- the dashboards is written using ReactJS, and TailwindCSS and uses [react-vis](https://uber.github.io/react-vis/) which in-turn is based on D3.
+- the dashboard is written in gatsby, in order to optimize the performance via service-size rendering, and suppose other awesome [features that gatsby provides](https://www.gatsbyjs.com/features).
+- Configurations:
+  - there are no configurations needed for the dashboard, when deploying, a single line configuration change is needed to point the dashboard to the API server.
+
+- Features
+  - Show team details
+  - Show team member details along-with their operating systems
+  - Completely responsive and runs smoothly on mobile. 
+  - View timeseries data in form of graph for snapshot values and entropy values
+  - LIVE feed from participant's devices.
+  - Click on any timestamp to compare other timestamps from that value.
+  - Use of colors to demonstrate additions, deletions and no changes.
+  - Please refer the demo for more:
+ 
+### Walkthrough
 
 ![https://i.imgur.com/PebX7cQ.png](https://i.imgur.com/PebX7cQ.png)
 
 - shows the friendly name of each device in team, and also their platforms.
+
 ![https://i.imgur.com/XOUdZYP.png](https://i.imgur.com/XOUdZYP.png)
 
 - When a device a hovered 
+
 ![https://i.imgur.com/Nqp6ecN.png](https://i.imgur.com/Nqp6ecN.png)
 
 - opening the details of any device shows a live graph of project snapshot and entropy.
