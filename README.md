@@ -19,7 +19,7 @@ Hentry, is a hackathon sentry that allows organizers to provide a fair competing
 API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#intro)
 
 ## Architecture
-![https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png](https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png)
+![Project Architecture](https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/map.png?token=ADLB4KYTBXCLY4N2QTW5J5TAVJJP2)
 
 ## Hentry Client
 
@@ -30,7 +30,7 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
   - Does **NOT** require admin privileges.
   - Device signatures are hardware independent, as they can be easily spoofed by VMs. MAC and BIOS settings are also ignored as they can be easily manipulated.
   - Automatically identifies the platform to display in the admin panel.
-
+  - A list of pre-compiled binaries is available on [hentry-client.surge.sh](http://hentry-client.surge.sh/). It is however recommended to compile for yourself as we're in early testing phase.
 
 - **The Interface**
   - Interactive command line interface with option to navigate using arrow keys and validation check indicators builtin. If the validation is about to fail, the terminal shows red with an error message and there's no need to work-up again and again.
@@ -42,8 +42,8 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
   - The configuration file should be named **hentry.yaml** and be placed in the same directory as the binary sits.
   ```yml
     app:
-      server: "http://localhost:8000"
-      feeder: "http://localhost:9000"
+      server: "https://some-fancy-server/api"
+      feeder: "https://some-fancy-server/feed"
       debug: true
 
     ignore:
@@ -73,7 +73,6 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
 - **Debug Mode**
   - the **hentry,yaml** contains an option to enable the debug mode.
   - This mode is added to help developers debug the deployments. Once its turned on, the binary will log all API request its sending and receiving.
-
 ### Walkthrough
 
 Launching without any configurations or admin rights:
