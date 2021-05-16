@@ -72,7 +72,7 @@ func GetTeamDetailAPI(teamID string) Team {
 	}
 
 	var parsedAPIResponse getTeamDetailsAPIResponse
-	fmt.Println("API Response : ", parsedAPIResponse)
+	// fmt.Println("API Response : ", parsedAPIResponse)
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
 
 	return parsedAPIResponse.Payload
