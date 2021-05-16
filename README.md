@@ -24,7 +24,7 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
 ## Hentry Client
 
 ![https://i.imgur.com/hfATaxW.png](https://i.imgur.com/hfATaxW.png)
-- The Binary
+- **The Binary**
   - Can be compiled for any platform, any architecture as far as GoLang supports it. 
   - Generates unique signature for each device, which cannot be altered by changing configurations or be spoofed. So single machine cannot act as multiple devices.
   - Does **NOT** require admin privilege.
@@ -32,11 +32,11 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
   - Automatically identifies the platform to display in the admin panel.
 
 
-- The Interface
+- **The Interface**
   - Interactive command line interface with option to navigate using arrow keys and validation check indicators builtin. If the validation is about to fail, the terminal shows red and there's no need to work-up again and again.
   - Secure TeamID Input : Since team IDs are used to join a team, the interface masks the input with `*` to add a layer of security in the user interface.
 
-- Configuration
+- **Configuration**
   - To make it effortless for users to use the application, server credentials can be embedded into the binary itself by the organizers (single point configuration declarations), and the participants can directly run the same.
   - In case if there are changes in server deployments, or the organizers come up with alternative servers to relay the updates, a configuration file can be used to declare the endpoints.
   - The configuration file should be named **hentry.yaml** and be placed in the same directory as the binary sits.
@@ -48,14 +48,19 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
   ```
   - Restarting the client will first check if a configuration file is present. If its not, then display a message to ensure that the user knows, and go ahead to load the default configurations.
 
-- Functionality
+- **Functionality**
   - Allows user to create a team of people working together in an event / competition.
   - Allows user to join an existing team 
   - Allows user to register their device 
-- Can identity old devices and avoid duplicate logins, based on device signatures.
-- Interactive command line interface, with indicators showing validation results.
-- Written implementing go-routines, utilizes minimal system resources, non blocking.
-- Creates an internal directory mapping as hashmap and transmits data to hentry-server
+  - Thanks to unique device signatures, can identity old devices and avoid duplicate logins.
+
+- **Fancy Tech**
+  - Written implementing go-routines for concurrency ⚡ and speed, utilizes minimal system resources, non blocking.
+  - Recursively walks the the directory tree and creates a hashmap of the project in the memory.
+  - Calculates the snapshot score and entropy of all the files in each iteration.
+  - Snapshot score depends upon the file contents, length and size.
+  - Entropy is a name given to diff-match score, which is basically the number of insertions and deletions required to move from one state to another. 
+  - The entropy is calculated using the [golang port](https://pkg.go.dev/github.com/sergi/go-diff/diffmatchpatch) of [Neil Fraser's google-diff-match-patch](https://github.com/google/diff-match-patch) code 
 - Written in Golang, can be compiled for any operating system and architecture.
 - Deployment configurations embedded into binary, just run on terminal and use. If required, can pass data into binary for custom configurations.
 - Who uses this

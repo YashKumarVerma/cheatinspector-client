@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/YashKumarVerma/hentry-client/internal/config"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
@@ -32,17 +31,16 @@ func NotifyBackend(entropy uint64) bool {
 	defer resp.Body.Close()
 
 	// read response body as required
-	body, err := ioutil.ReadAll(resp.Body)
+	_, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
-
 	}
 
-	fmt.Println("Publisher Entropy Call : ")
-	fmt.Println("Publisher Entropy Call : Target : ", config.Load.Feeder+"/data")
-	fmt.Println("Publisher Entropy Call : Params : ", strconv.FormatUint(entropy, 10))
-	fmt.Println("Publisher Entropy Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
-	fmt.Println("Publisher Entropy Call : Response : ", string(body))
+	fmt.Println("Entropy Transmitted.")
+	// fmt.Println("Publisher Entropy Call : Target : ", config.Load.Feeder+"/data")
+	// fmt.Println("Publisher Entropy Call : Params : ", strconv.FormatUint(entropy, 10))
+	// fmt.Println("Publisher Entropy Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	// fmt.Println("Publisher Entropy Call : Response : ", string(body))
 
 	return true
 }
@@ -65,17 +63,17 @@ func UpdateSnapshot(data uint64) bool {
 	defer resp.Body.Close()
 
 	// read response body as required
-	body, err := ioutil.ReadAll(resp.Body)
+	_, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
 
 	}
 
-	fmt.Println("Publisher Snapshot Call : ")
-	fmt.Println("Publisher Snapshot Call : Target : ", config.Load.Feeder+"/data")
-	fmt.Println("Publisher Snapshot Call : Params : ", strconv.FormatUint(data, 10))
-	fmt.Println("Publisher Snapshot Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
-	fmt.Println("Publisher Snapshot Call : Response : ", string(body))
+	fmt.Println("Snapshot transmitted.")
+	// fmt.Println("Publisher Snapshot Call : Target : ", config.Load.Feeder+"/data")
+	// fmt.Println("Publisher Snapshot Call : Params : ", strconv.FormatUint(data, 10))
+	// fmt.Println("Publisher Snapshot Call : Stamp : ", time.Unix(time.Now().Unix(), 0).Format(time.RFC1123Z))
+	// fmt.Println("Publisher Snapshot Call : Response : ", string(body))
 
 	return true
 }

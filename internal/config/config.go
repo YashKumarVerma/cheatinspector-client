@@ -15,17 +15,36 @@ func Init() {
 	viper.SetConfigType("yaml")
 	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Println("Custom configurations not found, using defaults")
+		fmt.Println("Configuration file named \"hentry.yaml\" not found, using defaults")
+	} else {
+		fmt.Println("Configurations loaded from file, overriding defaults.")
 	}
 
-	// set the default as project deployment server
-	viper.SetDefault("server.url", "http://40.119.165.213:8000")
-	viper.SetDefault("feeder.url", "http://40.119.165.213:9000")
+	// knownConfigs is a list of files to ignore by default
+	var knownConfigs = []string{".git", ".idea", ".cache", "node_modules", "dist"}
+	var emptyList []string
 
-	// assing the configurations to the exported data member
+	// set the default as project deployment server
+	viper.SetDefault("app.server", "http://40.119.165.213:8000")
+	viper.SetDefault("app.feeder", "http://40.119.165.213:9000")
+	viper.SetDefault("app.debug", false)
+	viper.SetDefault("ignore", emptyList)
+
+	// join the pre-defined ignore list and the new list
+	knownConfigs = append(knownConfigs, viper.GetStringSlice("ignore")...)
+
+	fmt.Println("\nIgnoring Directories :")
+	for _, val := range knownConfigs {
+		fmt.Println("- " + val)
+	}
+	fmt.Println()
+
+	// accessing the configurations to the exported data member
 	Load.Name = "hentry"
-	Load.Server = viper.GetString("server.url")
-	Load.Feeder = viper.GetString("feeder.url")
+	Load.Server = viper.GetString("app.server")
+	Load.Feeder = viper.GetString("app.feeder")
+	Load.Debug = viper.GetBool("app.debug")
+	Load.Ignore = knownConfigs
 }
 
 // Load exposes the configurations to other internal modules

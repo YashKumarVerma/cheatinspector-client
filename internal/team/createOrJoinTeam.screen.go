@@ -24,9 +24,11 @@ func CreateOrJoinTeamScreen() string {
 		return "create"
 	}
 
+	// transform user response into strings which are later checked by other modules
 	if result == "Create a team" {
 		return "create"
 	}
 
+	// if not create, then join is the only second option.
 	return "join"
 }

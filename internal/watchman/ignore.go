@@ -1,13 +1,13 @@
 package watchman
 
-import "strings"
-
-// knownConfigs is a list of files to ignore even if they are not in .gitignore
-var knownConfigs = []string{".git", ".idea", ".cache", "node_modules", "dist"}
+import (
+	"github.com/YashKumarVerma/hentry-client/internal/config"
+	"strings"
+)
 
 // isKnownConfigs returns true if given file is supposed to be ignored
 func isKnownConfigs(needle string) bool {
-	for _, val := range knownConfigs {
+	for _, val := range config.Load.Ignore {
 		if val == needle {
 			return true
 		}

@@ -61,7 +61,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Device ID: ", UserDevice.MachineID)
+	fmt.Println("Device ID: ", sensor.Load.MachineID)
 
 	// repeat the process based on config.frequency
 	for i := 1; i >= 0; i++ {
@@ -76,4 +76,6 @@ func main() {
 		watchman.ResetAggregator()
 		watchman.ResetTotal()
 	}
+
+	_ = UserDevice
 }

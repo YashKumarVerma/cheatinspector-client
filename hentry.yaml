@@ -1,4 +1,10 @@
-server:
-  url: "http://localhost:8000"
-feeder:
-  url: "http://localhost:9000"
+app:
+  server: "http://localhost:8000"
+  feeder: "http://localhost:9000"
+  debug: true
+
+ignore:
+  - "public"
+  - "cache"
+  - "build"
+  - "some-custom"
