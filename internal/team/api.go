@@ -39,20 +39,23 @@ func CreateTeamAPI(team CreateTeamStruct) Team {
 	var parsedAPIResponse createTeamAPIResponse
 	json.Unmarshal([]byte(body), &parsedAPIResponse)
 
-	// print detailed log about API call
-	// fmt.Println("\nAPI Call Log ")
-	// fmt.Println("\nAPI Call Log : Target ", config.Load.Server+"/team")
-	// fmt.Println("\nAPI Call Log : Body : ", responseBody)
-	// fmt.Println("\nAPI Call Log : Params : ", team)
-	// fmt.Println("\nAPI Call Log : Response : Code ", parsedAPIResponse.Code)
-	// fmt.Println("\nAPI Call Log : Response : Error ", parsedAPIResponse.Err)
-	// fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.Devices)
-	// fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.ID)
-	// fmt.Println("\nAPI Call Log : Response : Payload ", parsedAPIResponse.Payload.Name)
+	// print detailed log about API call when debug mode is on
+	if config.Load.Debug == true {
+		fmt.Println("API Call Log ")
+		fmt.Println("API Call Log : Target ", config.Load.Server+"/team")
+		fmt.Println("API Call Log : Body : ", responseBody)
+		fmt.Println("API Call Log : Params : ", team)
+		fmt.Println("API Call Log : Response : Code ", parsedAPIResponse.Code)
+		fmt.Println("API Call Log : Response : Error ", parsedAPIResponse.Err)
+		fmt.Println("API Call Log : Response : Payload ", parsedAPIResponse.Payload.Devices)
+		fmt.Println("API Call Log : Response : Payload ", parsedAPIResponse.Payload.ID)
+		fmt.Println("API Call Log : Response : Payload ", parsedAPIResponse.Payload.Name)
+	}
 
 	return parsedAPIResponse.Payload
 }
 
+// GetTeamDetailAPI fetches the team details from the remote API Server.
 func GetTeamDetailAPI(teamID string) Team {
 	resp, err := http.Get(config.Load.Server + "/team/" + teamID)
 

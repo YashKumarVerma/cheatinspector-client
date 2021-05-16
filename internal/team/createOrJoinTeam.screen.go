@@ -6,7 +6,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-// CreateOrJoinTeam shows UI to select user choice on start-up
+// CreateOrJoinTeamScreen shows UI to select user choice on start-up
 func CreateOrJoinTeamScreen() string {
 
 	// declare choices for interface

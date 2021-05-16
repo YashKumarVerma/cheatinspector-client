@@ -8,7 +8,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-//  to get the team ID input from user
+//  getTeamIdScreen to get the team ID input from user
 func getTeamIdScreen() string {
 
 	// ensure that team-id is atleast 4 characters long
@@ -42,7 +42,7 @@ func getTeamIdScreen() string {
 	return result
 }
 
-//  to get the team name input from user
+//  getTeamNameScreen to get the team name input from user
 func getTeamNameScreen() string {
 
 	// ensure that team names are at-least 6 characters long.
@@ -77,7 +77,7 @@ func getTeamNameScreen() string {
 	return result
 }
 
-// CreateOrJoinTeam shows UI to select user choice on start-up
+// CreateTeamScreen shows UI to select user choice on start-up
 func CreateTeamScreen() CreateTeamStruct {
 
 	teamDetails := CreateTeamStruct{

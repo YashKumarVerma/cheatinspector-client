@@ -8,7 +8,7 @@ func Total(drop int64) {
 	TotalCalculator += uint64(drop)
 }
 
-// ResetTotal sets the projectsize to zero, to be run after each cycle
+// ResetTotal sets the project size to zero, to be run after each cycle
 func ResetTotal() {
 	go UpdateSnapshot(TotalCalculator)
 

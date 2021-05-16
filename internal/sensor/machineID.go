@@ -6,7 +6,7 @@ import (
 	"github.com/denisbrodbeck/machineid"
 )
 
-// to generate a unique signature of each device
+// getMachineId returns a unique signature of each device
 func getMachineId() string {
 	id, err := machineid.ID()
 	if err != nil {

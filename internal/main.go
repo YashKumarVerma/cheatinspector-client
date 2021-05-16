@@ -40,7 +40,7 @@ func main() {
 
 	//  if not found, then initiate login process
 	if notFound == true {
-		fmt.Println("Device not registered on Hentry, registration in process...")
+		fmt.Println("\nDevice not registered on Hentry, registration in process...")
 		deviceDetails := device.CreateTeamScreen()
 		teamNotFound, deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
 
@@ -51,7 +51,7 @@ func main() {
 			UserDevice = deviceAPIResponse
 		}
 	} else {
-		fmt.Println("Device already registered.")
+		fmt.Println("\nDevice already registered.")
 		UserDevice = deviceInfo
 	}
 

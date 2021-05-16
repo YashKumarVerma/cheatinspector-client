@@ -6,6 +6,7 @@ import (
 
 var index map[string]fs.FileDetails
 
+// Init to initialize internal key-value storage for directory details
 func Init(){
 	index = make(map[string]fs.FileDetails)
 }

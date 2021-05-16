@@ -41,6 +41,7 @@ func ProcessFile(file fs.FileDetails) bool {
 	_, newDetails := fs.AnalyzeFile(file.Path)
 	var difference Diff
 	diffCalculator := diffmatchpatch.New()
+	newDiffCalculator := diffmatchpatch.New()
 
 	// check if entry exist in hashmap
 	if oldDetails, ok := index[file.Path]; ok {
@@ -50,14 +51,15 @@ func ProcessFile(file fs.FileDetails) bool {
 		difference.changes = diffCalculator.DiffLevenshtein(diff)
 
 	} else {
+		newDiff := newDiffCalculator.DiffMain(newDetails.Contents, "", true)
 		difference.size = newDetails.Size
 		difference.timestamp = newDetails.LastModified.Sub(newDetails.LastModified)
-		difference.changes = len(newDetails.Contents)
+		difference.changes = newDiffCalculator.DiffLevenshtein(newDiff)
 	}
 
 	// Aggregate the entropy to calculate net change per cycle
 	Aggregate(difference.changes)
-	Total(newDetails.Size)
+	Total(int64(len(newDetails.Contents)))
 
 	// save the current state of file into cache
 	setCache(newDetails)

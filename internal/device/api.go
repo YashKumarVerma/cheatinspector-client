@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// GetDeviceDetailAPI fetches the device details from the remote API Server
 func GetDeviceDetailAPI(deviceID string) (bool, Device) {
 	resp, err := http.Get(config.Load.Server + "/device/" + deviceID)
 	var device Device
@@ -32,6 +33,7 @@ func GetDeviceDetailAPI(deviceID string) (bool, Device) {
 	return parsedAPIResponse.Err, device
 }
 
+// RegisterDeviceAPI registers a new device with the API server
 func RegisterDeviceAPI(device registerDeviceStruct, teamID string) (bool, Device) {
 	var deviceInfo Device
 

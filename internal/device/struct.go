@@ -12,7 +12,7 @@ type Device struct {
 }
 
 //
-// API Structs
+// getDeviceDetailsAPIResponse
 //
 type getDeviceDetailsAPIResponse struct {
 	Err     bool   `json:"error"`
@@ -22,7 +22,7 @@ type getDeviceDetailsAPIResponse struct {
 }
 
 //
-// RegisterDeviceStruct
+// registerDeviceStruct
 //
 type registerDeviceStruct struct {
 	Name      string `json:"friendlyName"`
