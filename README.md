@@ -1,7 +1,7 @@
 # Hentry
 
 <p align="center">
-  <img width="460"  src="https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/hentry-logo.png">
+  <img width="460"  src="https://raw.githubusercontent.com/YashKumarVerma/hentry-server/master/illustrations/hentry-logo.png?token=ADLB4KZZHZPB3MEDI3GRA63AVIDKI">
 </p>
 
 Hentry, is a hackathon sentry that allows organizers to provide a fair competing platform in the online events. Since plagiarism and re-use are the major problems in such submissions which ruins the spirit of hackathons,  It utilizes intelligent algorithms to calculate project entropy and snapshots of participants' projects in real-time and visualizes the same for the organizers as a live graph in a pleasant user interface.
@@ -24,9 +24,34 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
 ## Hentry Client
 
 ![https://i.imgur.com/hfATaxW.png](https://i.imgur.com/hfATaxW.png)
+- The Binary
+  - Can be compiled for any platform, any architecture as far as GoLang supports it. 
+  - Generates unique signature for each device, which cannot be altered by changing configurations or be spoofed. So single machine cannot act as multiple devices.
+  - Does **NOT** require admin privilege.
+  - Device signatures are hardware independent, as they can be easily spoofed by VMs. MAC and BIOS settings are also ignored as they can be easily manipulated.
+  - Automatically identifies the platform to display in the admin panel.
 
-- Generates a unique signature of each machine, used to uniquely identify machine.
-- Allows user to log into hentry servers, create and join teams, and register devices.
+
+- The Interface
+  - Interactive command line interface with option to navigate using arrow keys and validation check indicators builtin. If the validation is about to fail, the terminal shows red and there's no need to work-up again and again.
+  - Secure TeamID Input : Since team IDs are used to join a team, the interface masks the input with `*` to add a layer of security in the user interface.
+
+- Configuration
+  - To make it effortless for users to use the application, server credentials can be embedded into the binary itself by the organizers (single point configuration declarations), and the participants can directly run the same.
+  - In case if there are changes in server deployments, or the organizers come up with alternative servers to relay the updates, a configuration file can be used to declare the endpoints.
+  - The configuration file should be named **hentry.yaml** and be placed in the same directory as the binary sits.
+  ```yml
+  server:
+    url: "http://api.some-server.io"
+  feeder:
+    url: "http://feeder.some-server.io"
+  ```
+  - Restarting the client will first check if a configuration file is present. If its not, then display a message to ensure that the user knows, and go ahead to load the default configurations.
+
+- Functionality
+  - Allows user to create a team of people working together in an event / competition.
+  - Allows user to join an existing team 
+  - Allows user to register their device 
 - Can identity old devices and avoid duplicate logins, based on device signatures.
 - Interactive command line interface, with indicators showing validation results.
 - Written implementing go-routines, utilizes minimal system resources, non blocking.
