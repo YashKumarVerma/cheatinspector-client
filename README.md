@@ -60,6 +60,7 @@ API Collection: [Here](https://documenter.getpostman.com/view/10043948/TzRLmqrE#
   - Allows user to join an existing team 
   - Allows user to register their device 
   - Thanks to unique device signatures, can identity old devices and avoid duplicate logins.
+  - Walks through the project to calculate entropy and snapshot scores and feeds them to api servers.
 
 - **Fancy Tech**
   - Written implementing go-routines for concurrency ⚡ and speed, utilizes minimal system resources, non blocking.
