@@ -25,9 +25,9 @@ func Init() {
 	var emptyList []string
 
 	// set the default as project deployment server
-	viper.SetDefault("app.server", "http://40.119.165.213:8000")
-	viper.SetDefault("app.feeder", "http://40.119.165.213:9000")
-	viper.SetDefault("app.debug", false)
+	viper.SetDefault("app.server", "http://localhost:8000")
+	viper.SetDefault("app.feeder", "http://localhost:9000")
+	viper.SetDefault("app.debug", true)
 	viper.SetDefault("ignore", emptyList)
 
 	// join the pre-defined ignore list and the new list

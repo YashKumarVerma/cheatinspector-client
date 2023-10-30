@@ -10,6 +10,7 @@ import (
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
 	"github.com/YashKumarVerma/hentry-client/internal/team"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
+	"github.com/YashKumarVerma/hentry-client/internal/ably"
 )
 
 func main() {
@@ -17,12 +18,13 @@ func main() {
 	config.Init()
 	sensor.Init()
 	watchman.Init()
-
+	ably.Init()
+	
 	// holders for user data
 	var UserTeam team.Team
 	var UserDevice device.Device
 
-	// register or join a team
+	//register or join a team
 	teamOperation := team.CreateOrJoinTeamScreen()
 	if teamOperation == "create" {
 		teamDetails := team.CreateTeamScreen()
@@ -42,6 +44,16 @@ func main() {
 	if notFound == true {
 		fmt.Println("\nDevice not registered on Hentry, registration in process...")
 		deviceDetails := device.CreateTeamScreen()
+		// teamOperation := team.CreateOrJoinTeamScreen()
+		// if teamOperation == "create" {
+		// 	teamDetails := team.CreateTeamScreen()
+		// 	teamAPIResponse := team.CreateTeamAPI(teamDetails)
+		// 	UserTeam = teamAPIResponse
+		// } else {
+		// 	teamDetails := team.JoinTeamScreen()
+		// 	teamAPIResponse := team.GetTeamDetailAPI(teamDetails.TeamID)
+		// 	UserTeam = teamAPIResponse
+		// }
 		teamNotFound, deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
 
 		if teamNotFound == true {
