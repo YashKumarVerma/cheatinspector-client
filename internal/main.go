@@ -11,6 +11,7 @@ import (
 	"github.com/YashKumarVerma/hentry-client/internal/team"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
 	"github.com/YashKumarVerma/hentry-client/internal/ably"
+	"github.com/YashKumarVerma/hentry-client/internal/presence"
 )
 
 func main() {
@@ -18,42 +19,35 @@ func main() {
 	config.Init()
 	sensor.Init()
 	watchman.Init()
-	ably.Init()
-	
+
+	// load all sensor data
+	userDeviceInfo := sensor.Load
+	ably.Init(userDeviceInfo.MachineID)
+
+
 	// holders for user data
 	var UserTeam team.Team
 	var UserDevice device.Device
 
-	//register or join a team
-	teamOperation := team.CreateOrJoinTeamScreen()
-	if teamOperation == "create" {
-		teamDetails := team.CreateTeamScreen()
-		teamAPIResponse := team.CreateTeamAPI(teamDetails)
-		UserTeam = teamAPIResponse
-	} else {
-		teamDetails := team.JoinTeamScreen()
-		teamAPIResponse := team.GetTeamDetailAPI(teamDetails.TeamID)
-		UserTeam = teamAPIResponse
-	}
 
-	// load all sensor data
-	userDeviceInfo := sensor.Load
+	
 	notFound, deviceInfo := device.GetDeviceDetailAPI(userDeviceInfo.MachineID)
-
 	//  if not found, then initiate login process
 	if notFound == true {
+		//register or join a team
+		teamOperation := team.CreateOrJoinTeamScreen()
+		if teamOperation == "create" {
+			teamDetails := team.CreateTeamScreen()
+			teamAPIResponse := team.CreateTeamAPI(teamDetails)
+			UserTeam = teamAPIResponse
+		} else {
+			teamDetails := team.JoinTeamScreen()
+			teamAPIResponse := team.GetTeamDetailAPI(teamDetails.TeamID)
+			UserTeam = teamAPIResponse
+		}
+
 		fmt.Println("\nDevice not registered on Hentry, registration in process...")
 		deviceDetails := device.CreateTeamScreen()
-		// teamOperation := team.CreateOrJoinTeamScreen()
-		// if teamOperation == "create" {
-		// 	teamDetails := team.CreateTeamScreen()
-		// 	teamAPIResponse := team.CreateTeamAPI(teamDetails)
-		// 	UserTeam = teamAPIResponse
-		// } else {
-		// 	teamDetails := team.JoinTeamScreen()
-		// 	teamAPIResponse := team.GetTeamDetailAPI(teamDetails.TeamID)
-		// 	UserTeam = teamAPIResponse
-		// }
 		teamNotFound, deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
 
 		if teamNotFound == true {
@@ -75,6 +69,10 @@ func main() {
 
 	fmt.Println("Device ID: ", sensor.Load.MachineID)
 
+	
+	// Updating presence
+	presence.UserOnlinePresence()
+	defer presence.UserLeavePresence()
 	// repeat the process based on config.frequency
 	for i := 1; i >= 0; i++ {
 		for _, folder := range folderNames {
@@ -84,10 +82,12 @@ func main() {
 				watchman.ProcessFile(fileDetails)
 			}
 		}
-		time.Sleep(5 * time.Second)
+		time.Sleep(20 * time.Second)
 		watchman.ResetAggregator()
 		watchman.ResetTotal()
 	}
 
 	_ = UserDevice
+
 }
+
