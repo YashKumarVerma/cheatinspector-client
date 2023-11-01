@@ -10,7 +10,7 @@ var ClientChannel *ably.RealtimeChannel
 func Init(machineID string) {
     fmt.Println("Ably Client Init called")
     var err error
-    AblyClient, err := ably.NewRealtime(ably.WithKey("J9x8VQ.Lw-2eg:Vgo3n8N5OLbPAX1CSu16seIVC3TZcz8FjKdCUuz9SAU"))
+    AblyClient, err := ably.NewRealtime(ably.WithKey("J9x8VQ.hxM02Q:cuc5WSlCcdoR67M26mrJPBgsliG0zum2DJfIwsZNvn8"))
     if err != nil {
         panic(err)
     }
