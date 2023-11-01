@@ -83,7 +83,7 @@ func main() {
 				watchman.ProcessFile(fileDetails)
 			}
 		}
-		time.Sleep(20 * time.Second)
+		time.Sleep(3 * time.Second)
 		watchman.ResetAggregator()
 		watchman.ResetTotal()
 	}
