@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/YashKumarVerma/hentry-client/internal/ably"
 	"github.com/YashKumarVerma/hentry-client/internal/config"
-	"github.com/YashKumarVerma/hentry-client/internal/device"
+
+	// "github.com/YashKumarVerma/hentry-client/internal/device"
 	"github.com/YashKumarVerma/hentry-client/internal/fs"
 	"github.com/YashKumarVerma/hentry-client/internal/sensor"
-	"github.com/YashKumarVerma/hentry-client/internal/team"
+
+	// "github.com/YashKumarVerma/hentry-client/internal/team"
 	"github.com/YashKumarVerma/hentry-client/internal/watchman"
 	"github.com/YashKumarVerma/hentry-client/internal/ably"
 	"github.com/YashKumarVerma/hentry-client/internal/presence"
@@ -50,16 +53,16 @@ func main() {
 		deviceDetails := device.CreateTeamScreen()
 		teamNotFound, deviceAPIResponse := device.RegisterDeviceAPI(deviceDetails, UserTeam.ID)
 
-		if teamNotFound == true {
-			fmt.Println("Team does not exist")
-		} else {
-			fmt.Println("Device registered.")
-			UserDevice = deviceAPIResponse
-		}
-	} else {
-		fmt.Println("\nDevice already registered.")
-		UserDevice = deviceInfo
-	}
+	// 	if teamNotFound == true {
+	// 		fmt.Println("Team does not exist")
+	// 	} else {
+	// 		fmt.Println("Device registered.")
+	// 		UserDevice = deviceAPIResponse
+	// 	}
+	// } else {
+	// 	fmt.Println("\nDevice already registered.")
+	// 	UserDevice = deviceInfo
+	// }
 
 	success, folderNames := fs.ListFolders("./")
 	if !success {
@@ -88,6 +91,5 @@ func main() {
 	}
 
 	_ = UserDevice
-
 }
 
