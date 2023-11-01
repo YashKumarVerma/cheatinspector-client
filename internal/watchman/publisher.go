@@ -10,6 +10,7 @@ import (
 	
 )
 func NotifyBackend(entropy uint64) bool {
+	ably.UserWritingCodePresence(sensor.Load.MachineID )
 	channel := ably.ClientChannel
 	channel.PublishAsync("entropy", string(strconv.FormatUint(entropy, 10)), func(err error) {
 		if err != nil {

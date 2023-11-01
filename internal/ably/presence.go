@@ -13,9 +13,9 @@ func UserOnlinePresence(machineID string) {
     }
 }
 
-func UserWritingCodePresence() {
+func UserWritingCodePresence(machineID string) {
     fmt.Println("Updating presence to Coding")
-    err := ClientChannel.Presence.Update(context.Background(), "Coding")
+    err := ClientChannel.Presence.UpdateClient(context.Background(),machineID, "Working")
     if err != nil {
         fmt.Println("Error updating presence:", err)
     }
